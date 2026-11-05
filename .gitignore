@@ -1,0 +1,16 @@
+venv/
+env/
+
+# Ignoruj pliki tymczasowe i cache Pythona
+__pycache__/
+*.pyc
+
+
+.vscode/
+.idea/
+
+Generatory/
+ZDJECIA1/
+ZDJECIA2/
+
+.DS_STORE
