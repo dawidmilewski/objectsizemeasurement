@@ -1,5 +1,6 @@
-opencv-contrib-python
+fastapi
+uvicorn
+python-multipart
+pydantic
+opencv-python
 numpy
-matplotlib
-customtkinter
-Pillow

@@ -1,5 +1,6 @@
 venv/
 env/
+.venv/
 
 # Ignoruj pliki tymczasowe i cache Pythona
 __pycache__/
@@ -12,5 +13,8 @@ __pycache__/
 Generatory/
 ZDJECIA1/
 ZDJECIA2/
+
+frontend/node_modules/
+frontend/dist/
 
 .DS_STORE
