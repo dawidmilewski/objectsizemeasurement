@@ -18,7 +18,7 @@ export default function DetailsModal({ object, onClose }) {
         <div className="edges-box">
           <h3>Długości krawędzi</h3>
           <ul>
-            {object.boki_otoczki_cm.map((bok, idx) => (
+            {object.boki_czworokata_cm.map((bok, idx) => (
               <li key={idx}>
                 <span>Bok {idx + 1}</span>
                 <strong>{bok.toFixed(2)} cm</strong>

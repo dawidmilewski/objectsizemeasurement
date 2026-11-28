@@ -46,6 +46,8 @@ export default function App() {
     if (!file) return;
 
     setSelectedFile(file);
+    setImageSrc(null);
+    setArucoPoints(null);
     setObjects([]);
     setErrorMessage(null);
     setLoading(true);
@@ -69,6 +71,7 @@ export default function App() {
       setStatusMessage("Wystąpił błąd podczas komunikacji z serwerem.");
     } finally {
       setLoading(false);
+      e.target.value = "";
     }
   };
 

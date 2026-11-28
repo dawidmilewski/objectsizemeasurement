@@ -40,9 +40,8 @@ export default function Plot2DModal({ objects, arucoSize, onClose }) {
   const scale = Math.min((svgWidth - pad * 2) / spanX, (svgHeight - pad * 2) / spanY);
 
   const offsetX = (svgWidth - spanX * scale) / 2 - minX * scale;
-  const offsetY = (svgHeight - spanY * scale) / 2 + maxY * scale;
-
-  const mapPt = ([x, y]) => [x * scale + offsetX, offsetY - y * scale];
+  const offsetY = (svgHeight - spanY * scale) / 2 - minY * scale;
+  const mapPt = ([x, y]) => [x * scale + offsetX, y * scale + offsetY];
   const mapPolygon = (pts) => pts.map(mapPt).map((p) => `${p[0]},${p[1]}`).join(" ");
 
   const arucoRect = [
@@ -69,7 +68,7 @@ export default function Plot2DModal({ objects, arucoSize, onClose }) {
           <div>
             <h2>Wizualizacja Wymiarów 2D</h2>
             <p className="modal-subtitle">
-              Analiza zrzutowanych kształtów w układzie metrycznym [cm] (skala 1:1)
+              Analiza zrzutowanych kształtów w układzie metrycznym [cm] (proporcje osi 1:1)
             </p>
           </div>
           <button className="btn-icon" onClick={onClose}>

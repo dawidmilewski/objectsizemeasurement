@@ -24,7 +24,7 @@ class MeasuredObject(BaseModel):
     szerokosc_cm: float
     czworokat_cm: List[List[float]]
     pelny_hull_cm: List[List[float]]
-    boki_otoczki_cm: List[float]
+    boki_czworokata_cm: List[float]
     metoda: str
 
 

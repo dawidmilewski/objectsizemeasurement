@@ -8,7 +8,7 @@ from schemas import CheckArucoResponse, AnalyzeResponse, MeasuredObject
 
 def detect_aruco_preview(image: np.ndarray) -> CheckArucoResponse:
     height, width = image.shape[:2]
-    punkty_aruco, _ = znajdz_aruco(image, 5.0)
+    punkty_aruco, _ = znajdz_aruco(image, wylicz_h=False)
 
     return CheckArucoResponse(
         image_base64=encode_image_to_base64(image),
@@ -21,10 +21,15 @@ def detect_aruco_preview(image: np.ndarray) -> CheckArucoResponse:
 
 def analyze_objects(image: np.ndarray, bok_cm: float) -> AnalyzeResponse:
     height, width = image.shape[:2]
-    punkty_aruco, H = znajdz_aruco(image, bok_cm)
+    punkty_aruco, H = znajdz_aruco(image, bok_cm, wylicz_h=True)
 
     if punkty_aruco is None or H is None:
         raise LookupError("Nie wykryto znacznika ArUco na zdjęciu.")
+
+    try:
+        H_inv = np.linalg.inv(H)
+    except np.linalg.LinAlgError as exc:
+        raise ValueError("Wyznaczona macierz homografii jest osobliwa i nieodwracalna.") from exc
 
     detected_contours = wykryj_kontury(image, punkty_aruco)
     measured_objects = []
@@ -40,7 +45,7 @@ def analyze_objects(image: np.ndarray, bok_cm: float) -> AnalyzeResponse:
             pelny_hull_cm,
             boki_szczegoly,
             metoda,
-        ) = oblicz_wymiary_obiektu(H, obiekt["hull_px"])
+        ) = oblicz_wymiary_obiektu(H, obiekt["hull_px"], H_inv=H_inv)
 
         measured_objects.append(
             MeasuredObject(
@@ -53,7 +58,7 @@ def analyze_objects(image: np.ndarray, bok_cm: float) -> AnalyzeResponse:
                 szerokosc_cm=float(szer),
                 czworokat_cm=czworokat_cm.reshape(-1, 2).tolist(),
                 pelny_hull_cm=pelny_hull_cm.reshape(-1, 2).tolist(),
-                boki_otoczki_cm=[float(b) for b in boki_szczegoly],
+                boki_czworokata_cm=[float(b) for b in boki_szczegoly],
                 metoda=metoda,
             )
         )
